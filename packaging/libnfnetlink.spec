@@ -1,34 +1,12 @@
-#
-# spec file for package libnfnetlink
-#
-# Copyright (c) 2011 SUSE LINUX Products GmbH, Nuernberg, Germany.
-#
-# All modifications and additions to the file contributed by third parties
-# remain the property of their copyright owners, unless otherwise agreed
-# upon. The license for this file, and modifications and additions to the
-# file, is the same license as for the pristine package itself (unless the
-# license for the pristine package is not an Open Source License, in which
-# case the license is the MIT License). An "Open Source License" is a
-# license that conforms to the Open Source Definition (Version 1.9)
-# published by the Open Source Initiative.
-
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
-#
-
-
-
 Name:           libnfnetlink
 %define libsoname	%{name}
-Version:        1.0.0+git28
+Version:        1.0.1
 Release:        2
 License:        GPL-2.0
 Url:            http://netfilter.org/projects/libnfnetlink/
 Group:          Productivity/Networking/Security
 
 Summary:        Low-level library for Netfilter-related kernel/userspace communication
-#Git-Clone:	git://git.netfilter.org/libnfnetlink
-#DL-URL:	ftp://ftp.netfilter.org/pub/libnfnetlink/
-#Source:  %{name}-%{version}.tar.bz2
 Source:         %{name}-%{version}.tar.bz2
 Source2:        baselibs.conf
 BuildRequires:  autoconf
@@ -36,7 +14,6 @@ BuildRequires:  automake >= 1.6
 BuildRequires:  libtool
 BuildRequires:  pkgconfig >= 0.23
 BuildRequires:  xz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %description
 libnfnetlink is the low-level library for netfilter related
@@ -66,31 +43,22 @@ It is only used by other netfilter.org projects, such as
 libnetfilter_log, libnetfilter_queue or libnetfilter_conntrack.
 
 %prep
-%if 0%{?__xz:1}
 %setup -q
-%else
-tar -xf "%{SOURCE0}" --use=xz;
-%setup -DTq
-%endif
 
 %build
-if [ ! -e configure ]; then
-	autoreconf -fi;
-fi
 %configure --disable-static --includedir=%{_includedir}/%{name}-%{version}
 make %{?_smp_mflags}
 
 %install
 %make_install
-rm -f "%{buildroot}/%{_libdir}"/*.la;
 
-%post -n %libsoname -p /sbin/ldconfig
+%post  -p /sbin/ldconfig
 
-%postun -n %libsoname -p /sbin/ldconfig
+%postun  -p /sbin/ldconfig
 
 %files
 %defattr(-,root,root)
-%doc COPYING README
+%doc COPYING
 %{_libdir}/libnfnetlink.so.*
 
 %files devel
