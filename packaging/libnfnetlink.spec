@@ -9,6 +9,7 @@ Group:          Productivity/Networking/Security
 Summary:        Low-level library for Netfilter-related kernel/userspace communication
 Source:         %{name}-%{version}.tar.bz2
 Source2:        baselibs.conf
+Source1001: 	libnfnetlink.manifest
 BuildRequires:  autoconf
 BuildRequires:  automake >= 1.6
 BuildRequires:  libtool
@@ -44,6 +45,7 @@ libnetfilter_log, libnetfilter_queue or libnetfilter_conntrack.
 
 %prep
 %setup -q
+cp %{SOURCE1001} .
 
 %build
 %configure --disable-static --includedir=%{_includedir}/%{name}-%{version}
@@ -57,11 +59,13 @@ make %{?_smp_mflags}
 %postun  -p /sbin/ldconfig
 
 %files
+%manifest %{name}.manifest
 %defattr(-,root,root)
 %doc COPYING
 %{_libdir}/libnfnetlink.so.*
 
 %files devel
+%manifest %{name}.manifest
 %defattr(-,root,root)
 %{_includedir}/libnfnetlink*
 %{_libdir}/libnfnetlink.so
