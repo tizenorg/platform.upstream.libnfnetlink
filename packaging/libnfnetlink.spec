@@ -2,7 +2,7 @@ Name:           libnfnetlink
 %define libsoname	%{name}
 Version:        1.0.1
 Release:        2
-License:        GPL-2.0
+License:        GPL-2.0+
 Url:            http://netfilter.org/projects/libnfnetlink/
 Group:          Productivity/Networking/Security
 
